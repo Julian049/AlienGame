@@ -21,6 +21,7 @@ public class ManagerPresenter implements ContractPlay.Presenter {
     public void run() {
         makeMVP();
         view.run();
+        model.countTime();
     }
 
     public void makeMVP() {
@@ -32,5 +33,10 @@ public class ManagerPresenter implements ContractPlay.Presenter {
 
         setModel(managerModel);
         setView(managerView);
+    }
+
+    @Override
+    public void updateTime(String time) {
+        view.updateTime(time);
     }
 }
