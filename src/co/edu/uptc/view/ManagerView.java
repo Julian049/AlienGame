@@ -26,18 +26,19 @@ public class ManagerView extends JFrame implements ContractPlay.View {
     }
 
     private void initComponents() {
-        setSize(600, 400);
+        setSize(1280, 650);
         this.setBackground(Color.BLACK);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         informationPanel = new InformationPanel();
-        informationPanel.setPreferredSize(new Dimension(600, 75));
+        informationPanel.setPreferredSize(new Dimension(1280, 100));
         add(informationPanel);
 
         dashboard = new Dashboard();
-        dashboard.setPreferredSize(new Dimension(600, 325));
+        dashboard.setPreferredSize(new Dimension(1280, 550));
+        dashboard.setManagerView(getInstance());
         add(dashboard);
 
         pack();
@@ -45,6 +46,7 @@ public class ManagerView extends JFrame implements ContractPlay.View {
 
     @Override
     public void run() {
+        dashboard.threadPaint();
         setVisible(true);
     }
 

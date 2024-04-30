@@ -1,6 +1,7 @@
 package co.edu.uptc.presenter;
 
 import co.edu.uptc.model.ManagerModel;
+import co.edu.uptc.pojo.CannonPojo;
 import co.edu.uptc.view.ManagerView;
 
 public class ManagerPresenter implements ContractPlay.Presenter {
@@ -38,5 +39,20 @@ public class ManagerPresenter implements ContractPlay.Presenter {
     @Override
     public void updateTime(String time) {
         view.updateTime(time);
+    }
+
+    @Override
+    public void moveCannonLeft() {
+        model.moveCannonLeft();
+    }
+
+    @Override
+    public void moveCannonRight() {
+        model.moveCannonRight();
+    }
+
+    @Override
+    public CannonPojo getCannonPojo() {
+        return model.getCannonPojo();
     }
 }
