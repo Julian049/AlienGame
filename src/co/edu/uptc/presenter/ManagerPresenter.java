@@ -1,8 +1,11 @@
 package co.edu.uptc.presenter;
 
 import co.edu.uptc.model.ManagerModel;
+import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
 import co.edu.uptc.view.ManagerView;
+
+import java.util.ArrayList;
 
 public class ManagerPresenter implements ContractPlay.Presenter {
     private ContractPlay.View view;
@@ -54,5 +57,15 @@ public class ManagerPresenter implements ContractPlay.Presenter {
     @Override
     public CannonPojo getCannonPojo() {
         return model.getCannonPojo();
+    }
+
+    @Override
+    public void shoot() {
+        model.shoot();
+    }
+
+    @Override
+    public BulletPojo getBulletPojo() {
+        return model.getBulletPojo();
     }
 }

@@ -1,15 +1,19 @@
 package co.edu.uptc.presenter;
 
+import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
+
+import java.util.ArrayList;
 
 public interface ContractPlay {
     interface Model {
         void setPresenter(Presenter presenter);
         void countTime();
         CannonPojo getCannonPojo();
+        BulletPojo getBulletPojo();
         void moveCannonRight();
         void moveCannonLeft();
-
+        void shoot();
     }
 
     interface View {
@@ -27,5 +31,7 @@ public interface ContractPlay {
         void moveCannonLeft();
         void moveCannonRight();
         CannonPojo getCannonPojo();
+        void shoot();
+        BulletPojo getBulletPojo();
     }
 }

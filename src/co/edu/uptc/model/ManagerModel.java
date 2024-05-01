@@ -1,7 +1,10 @@
 package co.edu.uptc.model;
 
+import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
 import co.edu.uptc.presenter.ContractPlay;
+
+import java.util.ArrayList;
 
 public class ManagerModel implements ContractPlay.Model {
     private ContractPlay.Presenter presenter;
@@ -35,6 +38,17 @@ public class ManagerModel implements ContractPlay.Model {
     public CannonPojo getCannonPojo() {
         CannonPojo cannonPojo = managerCannon.getCannonPojo();
         return cannonPojo;
+    }
+
+    @Override
+    public BulletPojo getBulletPojo() {
+        BulletPojo bulletPojo = managerCannon.getBulletPojo();
+        return bulletPojo;
+    }
+
+    @Override
+    public void shoot() {
+        managerCannon.shoot();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package co.edu.uptc.view.dashboard;
 
+import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
 import co.edu.uptc.view.ManagerView;
 import org.w3c.dom.CDATASection;
@@ -8,10 +9,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class Dashboard extends JPanel {
 
     private CannonPojo cannonPojo = new CannonPojo();
+    private BulletPojo bulletPojo = new BulletPojo();
     private ManagerView managerView;
 
     public Dashboard() {
@@ -21,6 +24,7 @@ public class Dashboard extends JPanel {
 
     public void initPojo() {
         cannonPojo = managerView.presenter.getCannonPojo();
+        bulletPojo = managerView.presenter.getBulletPojo();
     }
 
     public void setManagerView(ManagerView managerView) {
@@ -37,7 +41,7 @@ public class Dashboard extends JPanel {
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(80);
+                        Thread.sleep(1);
                         initPojo();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -52,8 +56,27 @@ public class Dashboard extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+
+        if (bulletPojo != null) {
+            g.setColor(Color.RED);
+            g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getSize(), bulletPojo.getSize());
+
+            if (bulletPojo.getCoordinateY() <= 0) {
+                g.setColor(getBackground());
+                g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getSize(), bulletPojo.getSize());
+                bulletPojo = null;
+            }}
+
+        if (bulletPojo != null && bulletPojo.getCoordinateY() >= 0) {
+            g.setColor(Color.RED);
+            g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getSize(), bulletPojo.getSize());
+        }else {
+            bulletPojo = null;
+        }
         g.setColor(Color.BLACK);
         g.fillRect(cannonPojo.getCoordinateX(), cannonPojo.getCoordinateY(), cannonPojo.getSize(), cannonPojo.getSize());
+
+
     }
 
     public void moveCannon() {
@@ -69,6 +92,8 @@ public class Dashboard extends JPanel {
                     managerView.presenter.moveCannonLeft();
                 } else if (e.getKeyCode() == KeyEvent.VK_D) {
                     managerView.presenter.moveCannonRight();
+                } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    managerView.presenter.shoot();
                 }
             }
 
