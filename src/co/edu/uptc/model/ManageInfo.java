@@ -1,5 +1,7 @@
 package co.edu.uptc.model;
 
+import co.edu.uptc.util.ModelPropertiesUtil;
+
 public class ManageInfo {
 
     private int seconds;
@@ -7,35 +9,35 @@ public class ManageInfo {
     private int hours;
 
     public ManageInfo() {
-        this.seconds = 0;
-        this.minutes = 0;
-        this.hours = 0;
+        this.seconds = ModelPropertiesUtil.INIT_TIME;
+        this.minutes = ModelPropertiesUtil.INIT_TIME;
+        this.hours = ModelPropertiesUtil.INIT_TIME;
     }
 
     public int countSeconds() {
-        if (seconds < 59) {
+        if (seconds < ModelPropertiesUtil.MAX_SECONDS_AND_MINUTES) {
             seconds++;
         }else {
             countMinutes();
-            seconds = 0;
+            seconds = ModelPropertiesUtil.INIT_TIME;
         }
         return seconds;
     }
 
     public void countMinutes() {
-        if (minutes < 59 && seconds == 59) {
+        if (minutes < ModelPropertiesUtil.MAX_SECONDS_AND_MINUTES && seconds == ModelPropertiesUtil.MAX_SECONDS_AND_MINUTES) {
             minutes++;
         }else {
             countHours();
-            minutes = 0;
+            minutes = ModelPropertiesUtil.INIT_TIME;
         }
     }
 
     public void countHours() {
-        if (hours < 23 && minutes == 59) {
+        if (hours < ModelPropertiesUtil.MAX_HOURS && minutes == ModelPropertiesUtil.MAX_SECONDS_AND_MINUTES) {
             hours++;
         }else {
-            hours = 0;
+            hours = ModelPropertiesUtil.INIT_TIME;
         }
     }
 

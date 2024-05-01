@@ -3,6 +3,8 @@ package co.edu.uptc.model;
 import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
 import co.edu.uptc.presenter.ContractPlay;
+import co.edu.uptc.util.ModelPropertiesUtil;
+import co.edu.uptc.util.SleepUtil;
 
 import java.util.ArrayList;
 
@@ -10,6 +12,7 @@ public class ManagerModel implements ContractPlay.Model {
     private ContractPlay.Presenter presenter;
     private ManageInfo manageInfo = new ManageInfo();
     private ManagerCannon managerCannon = new ManagerCannon();
+
     @Override
     public void setPresenter(ContractPlay.Presenter presenter) {
         this.presenter = presenter;
@@ -21,13 +24,9 @@ public class ManagerModel implements ContractPlay.Model {
             @Override
             public void run() {
                 while (true) {
-                    try {
-                        Thread.sleep(1000);
-                        String time = manageInfo.countSeconds() + "s " + manageInfo.getMinutes() + "m " + manageInfo.getHours() + "h";
-                        presenter.updateTime(time);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    SleepUtil.sleep(ModelPropertiesUtil.SPEED_TIME_THREAD);
+                    String time = manageInfo.countSeconds() + "s " + manageInfo.getMinutes() + "m " + manageInfo.getHours() + "h";
+                    presenter.updateTime(time);
                 }
             }
         };

@@ -2,6 +2,7 @@ package co.edu.uptc.view.dashboard;
 
 import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
+import co.edu.uptc.util.SleepUtil;
 import co.edu.uptc.view.ManagerView;
 import org.w3c.dom.CDATASection;
 
@@ -40,12 +41,8 @@ public class Dashboard extends JPanel {
             @Override
             public void run() {
                 while (true) {
-                    try {
-                        Thread.sleep(1);
+                        SleepUtil.sleep(1);
                         initPojo();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     repaint();
                 }
             }
@@ -59,22 +56,22 @@ public class Dashboard extends JPanel {
 
         if (bulletPojo != null) {
             g.setColor(Color.RED);
-            g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getSize(), bulletPojo.getSize());
+            g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getWidth(), bulletPojo.getHeight());
 
             if (bulletPojo.getCoordinateY() <= 0) {
                 g.setColor(getBackground());
-                g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getSize(), bulletPojo.getSize());
+                g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getWidth(), bulletPojo.getHeight());
                 bulletPojo = null;
             }}
 
         if (bulletPojo != null && bulletPojo.getCoordinateY() >= 0) {
             g.setColor(Color.RED);
-            g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getSize(), bulletPojo.getSize());
+            g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getWidth(), bulletPojo.getHeight());
         }else {
             bulletPojo = null;
         }
         g.setColor(Color.BLACK);
-        g.fillRect(cannonPojo.getCoordinateX(), cannonPojo.getCoordinateY(), cannonPojo.getSize(), cannonPojo.getSize());
+        g.fillRect(cannonPojo.getCoordinateX(), cannonPojo.getCoordinateY(), cannonPojo.getWidth(), cannonPojo.getHeight());
 
 
     }

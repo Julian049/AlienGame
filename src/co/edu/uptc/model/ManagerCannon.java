@@ -2,6 +2,8 @@ package co.edu.uptc.model;
 
 import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
+import co.edu.uptc.util.ModelPropertiesUtil;
+import co.edu.uptc.util.SleepUtil;
 
 import java.util.ArrayList;
 
@@ -16,31 +18,33 @@ public class ManagerCannon {
 
     public ManagerCannon() {
         cannonPojo = new CannonPojo();
-        this.cannonPojo.setCoordinateX(540);
-        this.cannonPojo.setCoordinateY(350);
-        this.cannonPojo.setSize(200);
-        this.cannonPojo.setSpeed(10);
+        this.cannonPojo.setCoordinateX(ModelPropertiesUtil.CANNON_X);
+        this.cannonPojo.setCoordinateY(ModelPropertiesUtil.CANNON_Y);
+        this.cannonPojo.setWidth(ModelPropertiesUtil.CANNON_WIDTH);
+        this.cannonPojo.setHeight(ModelPropertiesUtil.CANNON_HEIGHT);
+        this.cannonPojo.setSpeed(ModelPropertiesUtil.CANNON_PIXEL_MOVEMENT);
         setBulletPojo();
     }
 
     public void setBulletPojo() {
         bulletPojo = new BulletPojo();
-        this.bulletPojo.setCoordinateX(cannonPojo.getCoordinateX()+50);
-        this.bulletPojo.setCoordinateY(cannonPojo.getCoordinateY()+50);
-        this.bulletPojo.setSize(50);
-        this.bulletPojo.setSpeed(1);
+        this.bulletPojo.setWidth(ModelPropertiesUtil.BULLET_WIDTH);
+        this.bulletPojo.setHeight(ModelPropertiesUtil.BULLET_HEIGHT);
+        this.bulletPojo.setCoordinateX(cannonPojo.getCoordinateX());
+        this.bulletPojo.setCoordinateY(cannonPojo.getCoordinateY());
+        this.bulletPojo.setSpeed(ModelPropertiesUtil.BULLET_PIXEL_MOVEMENT);
     }
 
     public void leftCannon() {
         cannonPojo.setCoordinateX(cannonPojo.getCoordinateX() - cannonPojo.getSpeed());
-        if (cannonPojo.getCoordinateX() <= 1) {
+        if (cannonPojo.getCoordinateX() <= ModelPropertiesUtil.MIN_CANNON_MOVEMENT) {
             direction = DirectionEnum.RIGHT;
         }
     }
 
     public void rightCannon() {
         cannonPojo.setCoordinateX(cannonPojo.getCoordinateX() + cannonPojo.getSpeed());
-        if (cannonPojo.getCoordinateX() >= 1280) {
+        if (cannonPojo.getCoordinateX() >= ModelPropertiesUtil.MAX_CANNON_MOVEMENT) {
             direction = DirectionEnum.LEFT;
         }
     }
@@ -50,13 +54,9 @@ public class ManagerCannon {
         Thread thread = new Thread() {
             @Override
             public void run() {
-                while (bulletPojo.getCoordinateY() >= 0) {
-                    try {
-                        Thread.sleep(bulletPojo.getSpeed());
-                        moveBullet(bulletPojo);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                while (bulletPojo.getCoordinateY() >= ModelPropertiesUtil.MIN_BULLET_MOVEMENT) {
+                    SleepUtil.sleep(bulletPojo.getSpeed());
+                    moveBullet(bulletPojo);
                 }
                 bulletPojo = null;
             }
@@ -66,7 +66,7 @@ public class ManagerCannon {
 
     private void moveBullet(BulletPojo bulletPojo) {
         int coordinateY = bulletPojo.getCoordinateY();
-        bulletPojo.setCoordinateY(coordinateY -1);
+        bulletPojo.setCoordinateY(coordinateY - bulletPojo.getSpeed());
     }
 
     public CannonPojo getCannonPojo() {

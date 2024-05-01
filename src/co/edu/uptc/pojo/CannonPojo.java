@@ -7,8 +7,24 @@ public class CannonPojo {
     private int coordinateX;
     private int coordinateY;
     private int speed;
-    private int size;
-    private List<BulletPojo> bullets;
+    private int width;
+    private int height;
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
     public int getCoordinateX() {
         return coordinateX;
@@ -32,21 +48,5 @@ public class CannonPojo {
 
     public void setSpeed(int speed) {
         this.speed = speed;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public List<BulletPojo> getBullets() {
-        return bullets;
-    }
-
-    public void setBullets(List<BulletPojo> bullets) {
-        this.bullets = bullets;
     }
 }
