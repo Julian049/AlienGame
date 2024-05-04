@@ -17,7 +17,7 @@ public interface ContractPlay {
         void shoot();
         void loadAliens();
         void checkBulletColision();
-
+        void moveAliens();
         ArrayList<AlienPojo> getAliens();
     }
 

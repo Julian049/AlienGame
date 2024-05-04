@@ -15,6 +15,7 @@ public class ManagerCannonModel {
     private DirectionEnum direction = DirectionEnum.LEFT;
     private boolean shoot = false;
     private ManagerAliensModel managerAliensModel = new ManagerAliensModel();
+    private boolean bulletCollision = false;
 
     public void setCannonPojo(CannonPojo cannonPojo) {
         this.cannonPojo = cannonPojo;
@@ -62,7 +63,7 @@ public class ManagerCannonModel {
         Thread thread = new Thread() {
             @Override
             public void run() {
-                while (bulletPojo.getCoordinateY() >= ModelPropertiesUtil.MIN_BULLET_MOVEMENT) {
+                while (bulletPojo.getCoordinateY() >= ModelPropertiesUtil.MIN_BULLET_MOVEMENT && !bulletCollision) {
                     SleepUtil.sleep(1);
                     if (bulletPojo != null) {
                         moveBullet(bulletPojo);
@@ -71,14 +72,19 @@ public class ManagerCannonModel {
                 }
                 bulletPojo = null;
                 shoot = false;
+                bulletCollision = false;
             }
         };
         thread.start();
     }
 
     private void moveBullet(BulletPojo bulletPojo) {
-        int coordinateY = bulletPojo.getCoordinateY();
-        bulletPojo.setCoordinateY(coordinateY - bulletPojo.getSpeed());
+        if (!bulletCollision){
+            int coordinateY = bulletPojo.getCoordinateY();
+            bulletPojo.setCoordinateY(coordinateY - bulletPojo.getSpeed());
+        }else {
+            bulletPojo.setCoordinateY(cannonPojo.getCoordinateY());
+        }
     }
 
     public CannonPojo getCannonPojo() {
@@ -100,6 +106,7 @@ public class ManagerCannonModel {
             if (by >= alien.getCoordinateY() && by <= alien.getCoordinateY() + alien.getHeight()) {
                 if ((bx1 <= ax2 && bx1 >= ax1) || (bx2 <= ax2 && bx2 >= ax1)) {
                     toRemove.add(alien);
+                    bulletCollision = true;
                     break;
                 }
             }

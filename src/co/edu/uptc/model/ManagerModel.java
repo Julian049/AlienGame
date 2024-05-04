@@ -76,4 +76,9 @@ public class ManagerModel implements ContractPlay.Model {
     public ArrayList<AlienPojo> getAliens() {
         return managerAliensModel.getAliens();
     }
+
+    @Override
+    public void moveAliens() {
+        managerAliensModel.startAliens();
+    }
 }

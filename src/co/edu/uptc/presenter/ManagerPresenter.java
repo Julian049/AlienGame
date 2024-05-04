@@ -27,6 +27,7 @@ public class ManagerPresenter implements ContractPlay.Presenter {
         makeMVP();
         model.loadAliens();
         view.run();
+        model.moveAliens();
         model.countTime();
     }
 

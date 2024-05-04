@@ -1,5 +1,7 @@
 package co.edu.uptc.pojo;
 
+import co.edu.uptc.model.DirectionEnum;
+
 public class AlienPojo {
 
     private int coordinateX;
@@ -7,6 +9,15 @@ public class AlienPojo {
     private int speed;
     private int width;
     private int height;
+    private DirectionEnum direction;
+
+    public DirectionEnum getDirection() {
+        return direction;
+    }
+
+    public void setDirection(DirectionEnum direction) {
+        this.direction = direction;
+    }
 
     public int getCoordinateX() {
         return coordinateX;
