@@ -1,5 +1,6 @@
 package co.edu.uptc.model;
 
+import co.edu.uptc.pojo.AlienPojo;
 import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
 import co.edu.uptc.presenter.ContractPlay;
@@ -10,8 +11,9 @@ import java.util.ArrayList;
 
 public class ManagerModel implements ContractPlay.Model {
     private ContractPlay.Presenter presenter;
-    private ManageInfo manageInfo = new ManageInfo();
-    private ManagerCannon managerCannon = new ManagerCannon();
+    private ManagerInfoModel managerInfoModel = new ManagerInfoModel();
+    private ManagerCannonModel managerCannonModel = new ManagerCannonModel();
+    private ManagerAliensModel managerAliensModel = new ManagerAliensModel();
 
     @Override
     public void setPresenter(ContractPlay.Presenter presenter) {
@@ -25,7 +27,7 @@ public class ManagerModel implements ContractPlay.Model {
             public void run() {
                 while (true) {
                     SleepUtil.sleep(ModelPropertiesUtil.SPEED_TIME_THREAD);
-                    String time = manageInfo.countSeconds() + "s " + manageInfo.getMinutes() + "m " + manageInfo.getHours() + "h";
+                    String time = managerInfoModel.countSeconds() + "s " + managerInfoModel.getMinutes() + "m " + managerInfoModel.getHours() + "h";
                     presenter.updateTime(time);
                 }
             }
@@ -34,31 +36,44 @@ public class ManagerModel implements ContractPlay.Model {
     }
 
     @Override
+    public void checkBulletColision(){
+
+    }
+
+    @Override
     public CannonPojo getCannonPojo() {
-        CannonPojo cannonPojo = managerCannon.getCannonPojo();
+        CannonPojo cannonPojo = managerCannonModel.getCannonPojo();
         return cannonPojo;
     }
 
     @Override
     public BulletPojo getBulletPojo() {
-        BulletPojo bulletPojo = managerCannon.getBulletPojo();
+        BulletPojo bulletPojo = managerCannonModel.getBulletPojo();
         return bulletPojo;
     }
 
     @Override
     public void shoot() {
-        managerCannon.shoot();
+        managerCannonModel.shoot(managerAliensModel.getAliens());
     }
 
     @Override
     public void moveCannonRight() {
-        managerCannon.rightCannon();
+        managerCannonModel.rightCannon();
     }
 
     @Override
     public void moveCannonLeft() {
-        managerCannon.leftCannon();
+        managerCannonModel.leftCannon();
     }
 
+    @Override
+    public void loadAliens() {
+        managerAliensModel.createAliens();
+    }
 
+    @Override
+    public ArrayList<AlienPojo> getAliens() {
+        return managerAliensModel.getAliens();
+    }
 }

@@ -2,13 +2,13 @@ package co.edu.uptc.model;
 
 import co.edu.uptc.util.ModelPropertiesUtil;
 
-public class ManageInfo {
+public class ManagerInfoModel {
 
     private int seconds;
     private int minutes;
     private int hours;
 
-    public ManageInfo() {
+    public ManagerInfoModel() {
         this.seconds = ModelPropertiesUtil.INIT_TIME;
         this.minutes = ModelPropertiesUtil.INIT_TIME;
         this.hours = ModelPropertiesUtil.INIT_TIME;

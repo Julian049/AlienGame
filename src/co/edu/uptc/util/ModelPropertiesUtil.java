@@ -9,7 +9,7 @@ public class ModelPropertiesUtil {
 
     static {
         try {
-            properties.load(new FileInputStream("src/config.properties"));
+            properties.load(new FileInputStream("src/ModelConfig.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -30,4 +30,10 @@ public class ModelPropertiesUtil {
     public static int MAX_CANNON_MOVEMENT = Integer.parseInt(properties.getProperty("maxCannonMovement"));
     public static int MIN_BULLET_MOVEMENT = Integer.parseInt(properties.getProperty("minBulletMovement"));
     public static int SPEED_TIME_THREAD = Integer.parseInt(properties.getProperty("speedTimeThread"));
+    public static int MIN_ALIEN_WIDTH = Integer.parseInt(properties.getProperty("minAlienWidth"));
+    public static int MAX_ALIEN_WIDTH = Integer.parseInt(properties.getProperty("maxAlienWidth"));
+    public static int MIN_ALIEN_HEIGHT = Integer.parseInt(properties.getProperty("minAlienHeight"));
+    public static int MAX_ALIEN_HEIGHT = Integer.parseInt(properties.getProperty("maxAlienHeight"));
+    public static int MIN_ALIEN_SPEED = Integer.parseInt(properties.getProperty("minAlienSpeed"));
+    public static int MAX_ALIEN_SPEED = Integer.parseInt(properties.getProperty("maxAlienSpeed"));
 }

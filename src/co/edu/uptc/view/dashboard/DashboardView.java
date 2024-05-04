@@ -1,10 +1,11 @@
 package co.edu.uptc.view.dashboard;
 
+import co.edu.uptc.pojo.AlienPojo;
 import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
 import co.edu.uptc.util.SleepUtil;
+import co.edu.uptc.util.ViewPropertiesUtil;
 import co.edu.uptc.view.ManagerView;
-import org.w3c.dom.CDATASection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,13 +13,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-public class Dashboard extends JPanel {
+public class DashboardView extends JPanel {
 
     private CannonPojo cannonPojo = new CannonPojo();
     private BulletPojo bulletPojo = new BulletPojo();
     private ManagerView managerView;
+    private ArrayList<AlienPojo> aliens;
 
-    public Dashboard() {
+    public DashboardView() {
         initComponents();
         moveCannon();
     }
@@ -26,6 +28,7 @@ public class Dashboard extends JPanel {
     public void initPojo() {
         cannonPojo = managerView.presenter.getCannonPojo();
         bulletPojo = managerView.presenter.getBulletPojo();
+        aliens = managerView.presenter.getAliens();
     }
 
     public void setManagerView(ManagerView managerView) {
@@ -41,8 +44,8 @@ public class Dashboard extends JPanel {
             @Override
             public void run() {
                 while (true) {
-                        SleepUtil.sleep(1);
-                        initPojo();
+                    SleepUtil.sleep(ViewPropertiesUtil.PAINT_SPEED_THREAD);
+                    initPojo();
                     repaint();
                 }
             }
@@ -54,6 +57,7 @@ public class Dashboard extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
 
+
         if (bulletPojo != null) {
             g.setColor(Color.RED);
             g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getWidth(), bulletPojo.getHeight());
@@ -62,18 +66,15 @@ public class Dashboard extends JPanel {
                 g.setColor(getBackground());
                 g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getWidth(), bulletPojo.getHeight());
                 bulletPojo = null;
-            }}
-
-        if (bulletPojo != null && bulletPojo.getCoordinateY() >= 0) {
-            g.setColor(Color.RED);
-            g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getWidth(), bulletPojo.getHeight());
-        }else {
-            bulletPojo = null;
+            }
         }
         g.setColor(Color.BLACK);
         g.fillRect(cannonPojo.getCoordinateX(), cannonPojo.getCoordinateY(), cannonPojo.getWidth(), cannonPojo.getHeight());
 
-
+        for (AlienPojo alien : aliens) {
+            g.setColor(Color.GREEN);
+            g.fillOval(alien.getCoordinateX(), alien.getCoordinateY(), alien.getWidth(), alien.getHeight());
+        }
     }
 
     public void moveCannon() {
@@ -85,9 +86,9 @@ public class Dashboard extends JPanel {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_A) {
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     managerView.presenter.moveCannonLeft();
-                } else if (e.getKeyCode() == KeyEvent.VK_D) {
+                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     managerView.presenter.moveCannonRight();
                 } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     managerView.presenter.shoot();

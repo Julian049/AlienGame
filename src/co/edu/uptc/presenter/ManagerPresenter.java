@@ -1,6 +1,7 @@
 package co.edu.uptc.presenter;
 
 import co.edu.uptc.model.ManagerModel;
+import co.edu.uptc.pojo.AlienPojo;
 import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
 import co.edu.uptc.view.ManagerView;
@@ -24,6 +25,7 @@ public class ManagerPresenter implements ContractPlay.Presenter {
     @Override
     public void run() {
         makeMVP();
+        model.loadAliens();
         view.run();
         model.countTime();
     }
@@ -61,6 +63,7 @@ public class ManagerPresenter implements ContractPlay.Presenter {
 
     @Override
     public void shoot() {
+        model.checkBulletColision();
         model.shoot();
     }
 
@@ -68,4 +71,11 @@ public class ManagerPresenter implements ContractPlay.Presenter {
     public BulletPojo getBulletPojo() {
         return model.getBulletPojo();
     }
+
+    @Override
+    public ArrayList<AlienPojo> getAliens() {
+        ArrayList<AlienPojo> aliens = model.getAliens();
+        return aliens;
+    }
+
 }

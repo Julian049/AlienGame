@@ -1,22 +1,26 @@
 package co.edu.uptc.model;
 
+import co.edu.uptc.pojo.AlienPojo;
 import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
 import co.edu.uptc.util.ModelPropertiesUtil;
 import co.edu.uptc.util.SleepUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ManagerCannon {
+public class ManagerCannonModel {
     private CannonPojo cannonPojo;
     private BulletPojo bulletPojo;
     private DirectionEnum direction = DirectionEnum.LEFT;
+    private boolean shoot = false;
+    private ManagerAliensModel managerAliensModel = new ManagerAliensModel();
 
     public void setCannonPojo(CannonPojo cannonPojo) {
         this.cannonPojo = cannonPojo;
     }
 
-    public ManagerCannon() {
+    public ManagerCannonModel() {
         cannonPojo = new CannonPojo();
         this.cannonPojo.setCoordinateX(ModelPropertiesUtil.CANNON_X);
         this.cannonPojo.setCoordinateY(ModelPropertiesUtil.CANNON_Y);
@@ -49,16 +53,24 @@ public class ManagerCannon {
         }
     }
 
-    public void shoot() {
+    public void shoot(ArrayList<AlienPojo> aliens) {
+        if (shoot) {
+            return;
+        }
+        shoot = true;
         setBulletPojo();
         Thread thread = new Thread() {
             @Override
             public void run() {
                 while (bulletPojo.getCoordinateY() >= ModelPropertiesUtil.MIN_BULLET_MOVEMENT) {
-                    SleepUtil.sleep(bulletPojo.getSpeed());
-                    moveBullet(bulletPojo);
+                    SleepUtil.sleep(1);
+                    if (bulletPojo != null) {
+                        moveBullet(bulletPojo);
+                        killAlien(aliens);
+                    }
                 }
                 bulletPojo = null;
+                shoot = false;
             }
         };
         thread.start();
@@ -75,5 +87,23 @@ public class ManagerCannon {
 
     public BulletPojo getBulletPojo() {
         return bulletPojo;
+    }
+
+    public void killAlien(ArrayList<AlienPojo> aliens) {
+        List<AlienPojo> toRemove = new ArrayList<>();
+        for (AlienPojo alien : aliens) {
+            int ax1 = alien.getCoordinateX();
+            int ax2 = alien.getCoordinateX() + alien.getWidth();
+            int bx1 = bulletPojo.getCoordinateX();
+            int bx2 = bulletPojo.getCoordinateX() + bulletPojo.getWidth();
+            int by = bulletPojo.getCoordinateY();
+            if (by >= alien.getCoordinateY() && by <= alien.getCoordinateY() + alien.getHeight()) {
+                if ((bx1 <= ax2 && bx1 >= ax1) || (bx2 <= ax2 && bx2 >= ax1)) {
+                    toRemove.add(alien);
+                    break;
+                }
+            }
+        }
+        aliens.removeAll(toRemove);
     }
 }

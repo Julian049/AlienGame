@@ -1,5 +1,6 @@
 package co.edu.uptc.presenter;
 
+import co.edu.uptc.pojo.AlienPojo;
 import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
 
@@ -14,6 +15,10 @@ public interface ContractPlay {
         void moveCannonRight();
         void moveCannonLeft();
         void shoot();
+        void loadAliens();
+        void checkBulletColision();
+
+        ArrayList<AlienPojo> getAliens();
     }
 
     interface View {
@@ -33,5 +38,6 @@ public interface ContractPlay {
         CannonPojo getCannonPojo();
         void shoot();
         BulletPojo getBulletPojo();
+        ArrayList<AlienPojo> getAliens();
     }
 }

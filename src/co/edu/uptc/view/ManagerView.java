@@ -1,16 +1,19 @@
 package co.edu.uptc.view;
 
+import co.edu.uptc.pojo.AlienPojo;
 import co.edu.uptc.presenter.ContractPlay;
-import co.edu.uptc.view.dashboard.Dashboard;
-import co.edu.uptc.view.dashboard.InformationPanel;
+import co.edu.uptc.util.ViewPropertiesUtil;
+import co.edu.uptc.view.dashboard.DashboardView;
+import co.edu.uptc.view.dashboard.InformationPanelView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ManagerView extends JFrame implements ContractPlay.View {
     public ContractPlay.Presenter presenter;
-    private InformationPanel informationPanel;
-    private Dashboard dashboard;
+    private InformationPanelView informationPanelView;
+    private DashboardView dashboardView;
 
     @Override
     public void setPresenter(ContractPlay.Presenter presenter) {
@@ -26,32 +29,30 @@ public class ManagerView extends JFrame implements ContractPlay.View {
     }
 
     private void initComponents() {
-        setSize(1280, 650);
-        this.setBackground(Color.BLACK);
+        setSize(ViewPropertiesUtil.FRAME_WIDTH, ViewPropertiesUtil.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        setLayout(new FlowLayout());
+        setResizable(false);
 
-        informationPanel = new InformationPanel();
-        informationPanel.setPreferredSize(new Dimension(1280, 100));
-        add(informationPanel);
+        informationPanelView = new InformationPanelView();
+        informationPanelView.setPreferredSize(new Dimension(ViewPropertiesUtil.INFORMATION_PANEL_WIDTH, ViewPropertiesUtil.INFORMATION_PANEL_HEIGHT));
+        add(informationPanelView);
 
-        dashboard = new Dashboard();
-        dashboard.setPreferredSize(new Dimension(1280, 550));
-        dashboard.setManagerView(getInstance());
-        add(dashboard);
-
-        pack();
+        dashboardView = new DashboardView();
+        dashboardView.setManagerView(getInstance());
+        dashboardView.setPreferredSize(new Dimension(ViewPropertiesUtil.DASHBOARD_PANEL_WIDTH, ViewPropertiesUtil.DASHBOARD_PANEL_HEIGHT));
+        add(dashboardView);
     }
 
     @Override
     public void run() {
-        dashboard.threadPaint();
+        dashboardView.threadPaint();
         setVisible(true);
     }
 
     @Override
     public void updateTime(String time) {
-        informationPanel.getTimeLabel().setText("Time: " + time);
+        informationPanelView.getTimeLabel().setText("Time: " + time);
     }
 }
