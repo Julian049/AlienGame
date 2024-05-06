@@ -13,7 +13,7 @@ public class ManagerAliensModel {
     private CopyOnWriteArrayList<AlienPojo> aliens = new CopyOnWriteArrayList<>();
 
     public void createAliens() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < ModelPropertiesUtil.INITIAL_ALIENS; i++) {
             AlienPojo alien = new AlienPojo();
             alien.setWidth(randomWidth());
             alien.setHeight(randomHeight());
