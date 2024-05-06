@@ -17,7 +17,7 @@ public class InformationPanelView extends JPanel {
     }
 
     private void initComponents() {
-        this.setBackground(Color.BLUE);
+        this.setBackground(Color.BLACK);
         font = new Font(ViewPropertiesUtil.FONT_NAME, ViewPropertiesUtil.FONT_STYLE, ViewPropertiesUtil.FONT_SIZE);
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -60,6 +60,14 @@ public class InformationPanelView extends JPanel {
 
     public JLabel getTimeLabel() {
         return timeLabel;
+    }
+
+    public JLabel getAliensKilledLabel() {
+        return aliensKilledLabel;
+    }
+
+    public JLabel getAliensAliveLabel() {
+        return aliensAliveLabel;
     }
 
 }

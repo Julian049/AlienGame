@@ -6,7 +6,8 @@ import co.edu.uptc.pojo.BulletPojo;
 import co.edu.uptc.pojo.CannonPojo;
 import co.edu.uptc.view.ManagerView;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public class ManagerPresenter implements ContractPlay.Presenter {
     private ContractPlay.View view;
@@ -27,8 +28,10 @@ public class ManagerPresenter implements ContractPlay.Presenter {
         makeMVP();
         model.loadAliens();
         view.run();
-        model.moveAliens();
         model.countTime();
+        model.updateCountALiens();
+        model.spawnNwAlien();
+
     }
 
     public void makeMVP() {
@@ -45,6 +48,16 @@ public class ManagerPresenter implements ContractPlay.Presenter {
     @Override
     public void updateTime(String time) {
         view.updateTime(time);
+    }
+
+    @Override
+    public void updateAliveALiens(int aliensAlive) {
+        view.updateAliveALiens(aliensAlive);
+    }
+
+    @Override
+    public void updateKilledALiens(int aliensKilled) {
+        view.updateKilledALiens(aliensKilled);
     }
 
     @Override
@@ -74,8 +87,8 @@ public class ManagerPresenter implements ContractPlay.Presenter {
     }
 
     @Override
-    public ArrayList<AlienPojo> getAliens() {
-        ArrayList<AlienPojo> aliens = model.getAliens();
+    public synchronized CopyOnWriteArrayList<AlienPojo> getAliens() {
+        CopyOnWriteArrayList<AlienPojo> aliens = model.getAliens();
         return aliens;
     }
 

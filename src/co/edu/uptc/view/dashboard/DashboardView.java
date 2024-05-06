@@ -11,14 +11,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public class DashboardView extends JPanel {
 
     private CannonPojo cannonPojo = new CannonPojo();
     private BulletPojo bulletPojo = new BulletPojo();
     private ManagerView managerView;
-    private ArrayList<AlienPojo> aliens;
+    private CopyOnWriteArrayList<AlienPojo> aliens;
 
     public DashboardView() {
         initComponents();
@@ -36,7 +37,7 @@ public class DashboardView extends JPanel {
     }
 
     private void initComponents() {
-
+        this.setBackground(Color.BLACK);
     }
 
     public void threadPaint() {
@@ -57,10 +58,10 @@ public class DashboardView extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
 
-
         if (bulletPojo != null) {
-            g.setColor(Color.RED);
-            g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getWidth(), bulletPojo.getHeight());
+            ImageIcon bullet = new ImageIcon("img/cannonball.png");
+            bullet = new ImageIcon(bullet.getImage().getScaledInstance(bulletPojo.getWidth(), bulletPojo.getHeight(), Image.SCALE_FAST));
+            g.drawImage(bullet.getImage(), bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), null);
 
             if (bulletPojo.getCoordinateY() <= 0) {
                 g.setColor(getBackground());
@@ -68,13 +69,19 @@ public class DashboardView extends JPanel {
                 bulletPojo = null;
             }
         }
-        g.setColor(Color.BLACK);
-        g.fillRect(cannonPojo.getCoordinateX(), cannonPojo.getCoordinateY(), cannonPojo.getWidth(), cannonPojo.getHeight());
+        ImageIcon cannon = new ImageIcon("img/cannon.png");
+        cannon = new ImageIcon(cannon.getImage().getScaledInstance(cannonPojo.getWidth(), cannonPojo.getHeight(), Image.SCALE_FAST));
+        g.drawImage(cannon.getImage(), cannonPojo.getCoordinateX(), cannonPojo.getCoordinateY(), null);
+
+
 
         for (AlienPojo alien : aliens) {
-            g.setColor(Color.GREEN);
-            g.fillOval(alien.getCoordinateX(), alien.getCoordinateY(), alien.getWidth(), alien.getHeight());
+            ImageIcon alienIcon = new ImageIcon("img/alien.png");
+            alienIcon = new ImageIcon(alienIcon.getImage().getScaledInstance(alien.getWidth(), alien.getHeight(), Image.SCALE_FAST));
+            g.drawImage(alienIcon.getImage(), alien.getCoordinateX(), alien.getCoordinateY(), null);
+
         }
+
     }
 
     public void moveCannon() {

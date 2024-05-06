@@ -7,7 +7,8 @@ import co.edu.uptc.presenter.ContractPlay;
 import co.edu.uptc.util.ModelPropertiesUtil;
 import co.edu.uptc.util.SleepUtil;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public class ManagerModel implements ContractPlay.Model {
     private ContractPlay.Presenter presenter;
@@ -36,7 +37,7 @@ public class ManagerModel implements ContractPlay.Model {
     }
 
     @Override
-    public void checkBulletColision(){
+    public void checkBulletColision() {
 
     }
 
@@ -73,12 +74,28 @@ public class ManagerModel implements ContractPlay.Model {
     }
 
     @Override
-    public ArrayList<AlienPojo> getAliens() {
+    public CopyOnWriteArrayList<AlienPojo> getAliens() {
         return managerAliensModel.getAliens();
     }
 
     @Override
-    public void moveAliens() {
-        managerAliensModel.startAliens();
+    public void updateCountALiens() {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    int aliensAlive = managerAliensModel.getAliensAlive();
+                    int aliensKilled = managerCannonModel.getAliensKilled();
+                    presenter.updateAliveALiens(aliensAlive);
+                    presenter.updateKilledALiens(aliensKilled);
+                }
+            }
+        };
+        thread.start();
+    }
+
+    @Override
+    public void spawnNwAlien(){
+        managerAliensModel.spawnNewAlien();
     }
 }

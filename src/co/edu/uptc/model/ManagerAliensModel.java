@@ -2,15 +2,15 @@ package co.edu.uptc.model;
 
 import co.edu.uptc.pojo.AlienPojo;
 import co.edu.uptc.util.ModelPropertiesUtil;
+import co.edu.uptc.util.SleepUtil;
 import co.edu.uptc.util.ViewPropertiesUtil;
 
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ManagerAliensModel {
 
-    private ArrayList<AlienPojo> aliens = new ArrayList<>();
-    ;
+    private CopyOnWriteArrayList<AlienPojo> aliens = new CopyOnWriteArrayList<>();
 
     public void createAliens() {
         for (int i = 0; i < 10; i++) {
@@ -22,9 +22,31 @@ public class ManagerAliensModel {
             alien.setSpeed(randomSpeed());
             randomType(alien);
             aliens.add(alien);
+            startAlien(alien);
         }
     }
 
+    public synchronized void spawnNewAlien() {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    SleepUtil.sleep(500);
+                    AlienPojo alien = new AlienPojo();
+                    alien.setWidth(randomWidth());
+                    alien.setHeight(randomHeight());
+                    alien.setCoordinateX(randomX(alien));
+                    alien.setCoordinateY(randomY(alien));
+                    alien.setSpeed(randomSpeed());
+                    randomType(alien);
+                    aliens.add(alien);
+                    startAlien(alien);
+                }
+            }
+        };
+        thread.start();
+
+    }
 
     private int randomWidth() {
         Random random = new Random();
@@ -74,24 +96,22 @@ public class ManagerAliensModel {
         }
     }
 
-    public void startAliens() {
-
-        for (AlienPojo alien : aliens) {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        try {
-                            Thread.sleep(alien.getSpeed());
-                            moveAlien(alien);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+    public synchronized void startAlien(AlienPojo alien) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(alien.getSpeed());
+                        moveAlien(alien);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
-            });
-            thread.start();
-        }
+            }
+        });
+        thread.start();
+
     }
 
     public void moveAlien(AlienPojo alien) {
@@ -103,21 +123,25 @@ public class ManagerAliensModel {
         }
     }
 
-    public void leftAlien(AlienPojo alien) {
+    public synchronized void leftAlien(AlienPojo alien) {
         alien.setCoordinateX(alien.getCoordinateX() - ModelPropertiesUtil.CANNON_PIXEL_MOVEMENT);
-        if (alien.getCoordinateX() < 0) {
-            alien.setDirection(DirectionEnum.RIGHT);
+        if ((alien.getCoordinateX() + alien.getWidth()) < 0) {
+            aliens.remove(alien);
         }
     }
 
-    public void rightAlien(AlienPojo alien) {
+    public synchronized void rightAlien(AlienPojo alien) {
         alien.setCoordinateX(alien.getCoordinateX() + ModelPropertiesUtil.CANNON_PIXEL_MOVEMENT);
-        if (alien.getCoordinateX() >= (ViewPropertiesUtil.FRAME_WIDTH - alien.getWidth())) {
-            alien.setDirection(DirectionEnum.LEFT);
+        if (alien.getCoordinateX() >= ViewPropertiesUtil.FRAME_WIDTH) {
+            aliens.remove(alien);
         }
     }
 
-    public ArrayList<AlienPojo> getAliens() {
+    public CopyOnWriteArrayList<AlienPojo> getAliens() {
         return aliens;
+    }
+
+    public int getAliensAlive() {
+        return aliens.size();
     }
 }

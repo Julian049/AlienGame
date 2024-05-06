@@ -8,7 +8,7 @@ import co.edu.uptc.view.dashboard.InformationPanelView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+ 
 
 public class ManagerView extends JFrame implements ContractPlay.View {
     public ContractPlay.Presenter presenter;
@@ -32,6 +32,7 @@ public class ManagerView extends JFrame implements ContractPlay.View {
         setSize(ViewPropertiesUtil.FRAME_WIDTH, ViewPropertiesUtil.FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        this.getContentPane().setBackground(Color.BLACK);
         setLayout(new FlowLayout());
         setResizable(false);
 
@@ -54,5 +55,15 @@ public class ManagerView extends JFrame implements ContractPlay.View {
     @Override
     public void updateTime(String time) {
         informationPanelView.getTimeLabel().setText("Time: " + time);
+    }
+
+    @Override
+    public void updateAliveALiens(int aliensAlive) {
+        informationPanelView.getAliensAliveLabel().setText("Aliens alive: " + aliensAlive);
+    }
+
+    @Override
+    public void updateKilledALiens(int aliensKilled) {
+        informationPanelView.getAliensKilledLabel().setText("Aliens killed: " + aliensKilled);
     }
 }
