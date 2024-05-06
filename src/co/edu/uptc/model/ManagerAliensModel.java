@@ -31,7 +31,7 @@ public class ManagerAliensModel {
             @Override
             public void run() {
                 while (true) {
-                    SleepUtil.sleep(500);
+                    SleepUtil.sleep(ModelPropertiesUtil.TIME_TO_SPAWN_ALIEN);
                     AlienPojo alien = new AlienPojo();
                     alien.setWidth(randomWidth());
                     alien.setHeight(randomHeight());

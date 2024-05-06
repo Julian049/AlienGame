@@ -25,6 +25,9 @@ public class ViewPropertiesUtil {
     public static int DASHBOARD_PANEL_HEIGHT = Integer.parseInt(properties.getProperty("dashboardPanelHeight"));
     public static int INFORMATION_PANEL_WIDTH = Integer.parseInt(properties.getProperty("informationPanelWidth"));
     public static int INFORMATION_PANEL_HEIGHT = Integer.parseInt(properties.getProperty("informationPanelHeight"));
+    public static String ALIEN_IMAGE = properties.getProperty("alienImage");
+    public static String CANNON_IMAGE = properties.getProperty("cannonImage");
+    public static String BULLET_IMAGE = properties.getProperty("bulletImage");
 
 
 }

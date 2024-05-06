@@ -36,4 +36,5 @@ public class ModelPropertiesUtil {
     public static int MAX_ALIEN_HEIGHT = Integer.parseInt(properties.getProperty("maxAlienHeight"));
     public static int MIN_ALIEN_SPEED = Integer.parseInt(properties.getProperty("minAlienSpeed"));
     public static int MAX_ALIEN_SPEED = Integer.parseInt(properties.getProperty("maxAlienSpeed"));
+    public static int TIME_TO_SPAWN_ALIEN = Integer.parseInt(properties.getProperty("timeToSpawnAlien"));
 }

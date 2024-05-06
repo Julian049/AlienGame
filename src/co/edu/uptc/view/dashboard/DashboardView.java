@@ -59,7 +59,7 @@ public class DashboardView extends JPanel {
         super.paint(g);
 
         if (bulletPojo != null) {
-            ImageIcon bullet = new ImageIcon("img/cannonball.png");
+            ImageIcon bullet = new ImageIcon(ViewPropertiesUtil.BULLET_IMAGE);
             bullet = new ImageIcon(bullet.getImage().getScaledInstance(bulletPojo.getWidth(), bulletPojo.getHeight(), Image.SCALE_FAST));
             g.drawImage(bullet.getImage(), bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), null);
 
@@ -69,14 +69,14 @@ public class DashboardView extends JPanel {
                 bulletPojo = null;
             }
         }
-        ImageIcon cannon = new ImageIcon("img/cannon.png");
+        ImageIcon cannon = new ImageIcon(ViewPropertiesUtil.CANNON_IMAGE);
         cannon = new ImageIcon(cannon.getImage().getScaledInstance(cannonPojo.getWidth(), cannonPojo.getHeight(), Image.SCALE_FAST));
         g.drawImage(cannon.getImage(), cannonPojo.getCoordinateX(), cannonPojo.getCoordinateY(), null);
 
 
 
         for (AlienPojo alien : aliens) {
-            ImageIcon alienIcon = new ImageIcon("img/alien.png");
+            ImageIcon alienIcon = new ImageIcon(ViewPropertiesUtil.ALIEN_IMAGE);
             alienIcon = new ImageIcon(alienIcon.getImage().getScaledInstance(alien.getWidth(), alien.getHeight(), Image.SCALE_FAST));
             g.drawImage(alienIcon.getImage(), alien.getCoordinateX(), alien.getCoordinateY(), null);
 
