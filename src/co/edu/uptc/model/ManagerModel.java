@@ -16,6 +16,15 @@ public class ManagerModel implements ContractPlay.Model {
     private ManagerCannonModel managerCannonModel = new ManagerCannonModel();
     private ManagerAliensModel managerAliensModel = new ManagerAliensModel();
 
+    public ManagerModel() {
+        managerCannonModel.setManagerModel(getInstance());
+        managerAliensModel.setManagerModel(getInstance());
+    }
+
+    private ManagerModel getInstance() {
+        return this;
+    }
+
     @Override
     public void setPresenter(ContractPlay.Presenter presenter) {
         this.presenter = presenter;
@@ -23,34 +32,24 @@ public class ManagerModel implements ContractPlay.Model {
 
     @Override
     public void countTime() {
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    SleepUtil.sleep(ModelPropertiesUtil.SPEED_TIME_THREAD);
-                    String time = managerInfoModel.countSeconds() + "s " + managerInfoModel.getMinutes() + "m " + managerInfoModel.getHours() + "h";
-                    presenter.updateTime(time);
-                }
+        Thread thread = new Thread(() -> {
+            while (true) {
+                SleepUtil.sleep(ModelPropertiesUtil.SPEED_TIME_THREAD);
+                String time = managerInfoModel.countSeconds() + "s " + managerInfoModel.getMinutes() + "m " + managerInfoModel.getHours() + "h";
+                presenter.updateTime(time);
             }
-        };
+        });
         thread.start();
     }
 
     @Override
-    public void checkBulletColision() {
-
-    }
-
-    @Override
     public CannonPojo getCannonPojo() {
-        CannonPojo cannonPojo = managerCannonModel.getCannonPojo();
-        return cannonPojo;
+        return managerCannonModel.getCannonPojo();
     }
 
     @Override
-    public BulletPojo getBulletPojo() {
-        BulletPojo bulletPojo = managerCannonModel.getBulletPojo();
-        return bulletPojo;
+    public CopyOnWriteArrayList<BulletPojo> getBullets() {
+        return managerCannonModel.getBullets();
     }
 
     @Override
@@ -69,33 +68,50 @@ public class ManagerModel implements ContractPlay.Model {
     }
 
     @Override
-    public void loadAliens() {
-        managerAliensModel.createAliens();
-    }
-
-    @Override
     public CopyOnWriteArrayList<AlienPojo> getAliens() {
         return managerAliensModel.getAliens();
     }
 
     @Override
     public void updateCountALiens() {
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    int aliensAlive = managerAliensModel.getAliensAlive();
-                    int aliensKilled = managerCannonModel.getAliensKilled();
-                    presenter.updateAliveALiens(aliensAlive);
-                    presenter.updateKilledALiens(aliensKilled);
-                }
+        Thread thread = new Thread(() -> {
+            while (true) {
+                int aliensAlive = managerAliensModel.getAliensAlive();
+                int aliensKilled = managerCannonModel.getAliensKilled();
+                presenter.updateAliveALiens(aliensAlive);
+                presenter.updateKilledALiens(aliensKilled);
             }
-        };
+        });
         thread.start();
     }
 
     @Override
-    public void spawnNwAlien(){
+    public void startAliens() {
+        managerAliensModel.startAliens();
+    }
+
+    @Override
+    public void spawnNewAlien() {
         managerAliensModel.spawnNewAlien();
+    }
+
+    @Override
+    public int getFrameWidth() {
+        return presenter.getFrameWidth();
+    }
+
+    @Override
+    public int getFrameHeight() {
+        return presenter.getFrameHeight();
+    }
+
+    @Override
+    public void initElements() {
+        managerCannonModel.initCannon();
+    }
+
+    @Override
+    public void updateCannonYCoordinate() {
+        managerCannonModel.updateYCoordinate();
     }
 }

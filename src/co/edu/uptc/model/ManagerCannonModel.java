@@ -11,86 +11,67 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ManagerCannonModel {
     private CannonPojo cannonPojo;
-    private BulletPojo bulletPojo;
-    private DirectionEnum direction = DirectionEnum.LEFT;
-    private boolean shoot = false;
-    private ManagerAliensModel managerAliensModel = new ManagerAliensModel();
+    private CopyOnWriteArrayList<BulletPojo> bullets = new CopyOnWriteArrayList<>();
     private boolean bulletCollision = false;
+    private ManagerModel managerModel;
     private int aliensKilled;
 
-    public void setCannonPojo(CannonPojo cannonPojo) {
-        this.cannonPojo = cannonPojo;
-    }
-
-    public ManagerCannonModel() {
+    public void initCannon() {
         cannonPojo = new CannonPojo();
-        this.cannonPojo.setCoordinateX(ModelPropertiesUtil.CANNON_X);
-        this.cannonPojo.setCoordinateY(ModelPropertiesUtil.CANNON_Y);
         this.cannonPojo.setWidth(ModelPropertiesUtil.CANNON_WIDTH);
         this.cannonPojo.setHeight(ModelPropertiesUtil.CANNON_HEIGHT);
+        this.cannonPojo.setCoordinateX(managerModel.getFrameWidth() / 2);
+        updateYCoordinate();
         this.cannonPojo.setSpeed(ModelPropertiesUtil.CANNON_PIXEL_MOVEMENT);
-        setBulletPojo();
     }
 
-    public void setBulletPojo() {
-        bulletPojo = new BulletPojo();
-        this.bulletPojo.setWidth(ModelPropertiesUtil.BULLET_WIDTH);
-        this.bulletPojo.setHeight(ModelPropertiesUtil.BULLET_HEIGHT);
+    public void setManagerModel(ManagerModel managerModel) {
+        this.managerModel = managerModel;
+    }
 
+    public void setBulletPojo(BulletPojo bulletPojo) {
+        bulletPojo.setWidth(ModelPropertiesUtil.BULLET_WIDTH);
+        bulletPojo.setHeight(ModelPropertiesUtil.BULLET_HEIGHT);
         int middleCannonX = cannonPojo.getCoordinateX() + cannonPojo.getWidth() / 2;
         int middleCannonY = cannonPojo.getCoordinateY() + cannonPojo.getHeight() / 2;
-
-        this.bulletPojo.setCoordinateX(middleCannonX - bulletPojo.getWidth() / 2);
-        this.bulletPojo.setCoordinateY(middleCannonY - bulletPojo.getHeight() / 2);
-
-
-
-        this.bulletPojo.setSpeed(ModelPropertiesUtil.BULLET_PIXEL_MOVEMENT);
+        bulletPojo.setCoordinateX(middleCannonX - bulletPojo.getWidth() / 2);
+        bulletPojo.setCoordinateY(middleCannonY - bulletPojo.getHeight() / 2);
+        bulletPojo.setSpeed(ModelPropertiesUtil.BULLET_PIXEL_MOVEMENT);
     }
 
     public void leftCannon() {
-        cannonPojo.setCoordinateX(cannonPojo.getCoordinateX() - cannonPojo.getSpeed());
-        if (cannonPojo.getCoordinateX() <= ModelPropertiesUtil.MIN_CANNON_MOVEMENT) {
-            direction = DirectionEnum.RIGHT;
+        if (cannonPojo.getCoordinateX() >= 0) {
+            cannonPojo.setCoordinateX(cannonPojo.getCoordinateX() - cannonPojo.getSpeed());
         }
     }
 
     public void rightCannon() {
-        cannonPojo.setCoordinateX(cannonPojo.getCoordinateX() + cannonPojo.getSpeed());
-        if (cannonPojo.getCoordinateX() >= ModelPropertiesUtil.MAX_CANNON_MOVEMENT) {
-            direction = DirectionEnum.LEFT;
+        if (cannonPojo.getCoordinateX() <= (managerModel.getFrameWidth() - cannonPojo.getWidth())) {
+            cannonPojo.setCoordinateX(cannonPojo.getCoordinateX() + cannonPojo.getSpeed());
         }
     }
 
     public void shoot(CopyOnWriteArrayList<AlienPojo> aliens) {
-        if (shoot) {
-            return;
-        }
-        shoot = true;
-        setBulletPojo();
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                while (bulletPojo.getCoordinateY() >= ModelPropertiesUtil.MIN_BULLET_MOVEMENT && !bulletCollision) {
-                    SleepUtil.sleep(1);
-                    if (bulletPojo != null) {
-                        moveBullet(bulletPojo);
-                        killAlien(aliens);
-                    }
-                }
-                bulletPojo = null;
-                shoot = false;
-                bulletCollision = false;
+        BulletPojo bulletPojo = new BulletPojo();
+        setBulletPojo(bulletPojo);
+        bullets.add(bulletPojo);
+        Thread thread = new Thread(() -> {
+            while (bulletPojo.getCoordinateY() >= 0 && !bulletCollision) {
+                SleepUtil.sleep(1);
+                moveBullet(bulletPojo);
+                killAlien(aliens, bulletPojo);
             }
-        };
+            bullets.remove(bulletPojo);
+            bulletCollision = false;
+        });
         thread.start();
     }
 
     private void moveBullet(BulletPojo bulletPojo) {
-        if (!bulletCollision){
+        if (!bulletCollision) {
             int coordinateY = bulletPojo.getCoordinateY();
             bulletPojo.setCoordinateY(coordinateY - bulletPojo.getSpeed());
-        }else {
+        } else {
             bulletPojo.setCoordinateY(cannonPojo.getCoordinateY());
         }
     }
@@ -99,11 +80,11 @@ public class ManagerCannonModel {
         return cannonPojo;
     }
 
-    public BulletPojo getBulletPojo() {
-        return bulletPojo;
+    public CopyOnWriteArrayList<BulletPojo> getBullets() {
+        return bullets;
     }
 
-    public void killAlien(CopyOnWriteArrayList<AlienPojo> aliens) {
+    public void killAlien(CopyOnWriteArrayList<AlienPojo> aliens, BulletPojo bulletPojo) {
         List<AlienPojo> toRemove = new CopyOnWriteArrayList<>();
         for (AlienPojo alien : aliens) {
             int ax1 = alien.getCoordinateX();
@@ -125,5 +106,10 @@ public class ManagerCannonModel {
 
     public int getAliensKilled() {
         return aliensKilled;
+    }
+
+    public void updateYCoordinate() {
+        int downSide = managerModel.getFrameHeight() - cannonPojo.getHeight();
+        cannonPojo.setCoordinateY(downSide);
     }
 }

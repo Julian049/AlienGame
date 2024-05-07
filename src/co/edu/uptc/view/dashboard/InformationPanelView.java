@@ -17,7 +17,7 @@ public class InformationPanelView extends JPanel {
     }
 
     private void initComponents() {
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.black);
         font = new Font(ViewPropertiesUtil.FONT_NAME, ViewPropertiesUtil.FONT_STYLE, ViewPropertiesUtil.FONT_SIZE);
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();

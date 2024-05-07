@@ -17,9 +17,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class DashboardView extends JPanel {
 
     private CannonPojo cannonPojo = new CannonPojo();
-    private BulletPojo bulletPojo = new BulletPojo();
     private ManagerView managerView;
     private CopyOnWriteArrayList<AlienPojo> aliens;
+    private CopyOnWriteArrayList<BulletPojo> bullets;
 
     public DashboardView() {
         initComponents();
@@ -28,7 +28,7 @@ public class DashboardView extends JPanel {
 
     public void initPojo() {
         cannonPojo = managerView.presenter.getCannonPojo();
-        bulletPojo = managerView.presenter.getBulletPojo();
+        bullets = managerView.presenter.getBullets();
         aliens = managerView.presenter.getAliens();
     }
 
@@ -41,14 +41,11 @@ public class DashboardView extends JPanel {
     }
 
     public void threadPaint() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    SleepUtil.sleep(ViewPropertiesUtil.PAINT_SPEED_THREAD);
-                    initPojo();
-                    repaint();
-                }
+        Thread thread = new Thread(() -> {
+            while (true) {
+                SleepUtil.sleep(ViewPropertiesUtil.PAINT_SPEED_THREAD);
+                initPojo();
+                repaint();
             }
         });
         thread.start();
@@ -57,31 +54,41 @@ public class DashboardView extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        ImageIcon background = new ImageIcon("img/background.jpg");
+        background = new ImageIcon(background.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_FAST));
+        g.drawImage(background.getImage(), 0, 0, null);
+        paintBullets(g);
+        paintCannon(g);
+        paintAliens(g);
+    }
 
-        if (bulletPojo != null) {
-            ImageIcon bullet = new ImageIcon(ViewPropertiesUtil.BULLET_IMAGE);
-            bullet = new ImageIcon(bullet.getImage().getScaledInstance(bulletPojo.getWidth(), bulletPojo.getHeight(), Image.SCALE_FAST));
-            g.drawImage(bullet.getImage(), bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), null);
+    private void paintBullets(Graphics g) {
+        for (BulletPojo bulletPojo : bullets) {
+            if (bulletPojo != null) {
+                ImageIcon bullet = new ImageIcon(ViewPropertiesUtil.BULLET_IMAGE);
+                bullet = new ImageIcon(bullet.getImage().getScaledInstance(bulletPojo.getWidth(), bulletPojo.getHeight(), Image.SCALE_FAST));
 
-            if (bulletPojo.getCoordinateY() <= 0) {
-                g.setColor(getBackground());
-                g.fillOval(bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), bulletPojo.getWidth(), bulletPojo.getHeight());
-                bulletPojo = null;
+                if (cannonPojo.getCoordinateY() > bulletPojo.getCoordinateY()) {
+                    g.drawImage(bullet.getImage(), bulletPojo.getCoordinateX(), bulletPojo.getCoordinateY(), null);
+                }
             }
         }
+    }
+
+    private void paintCannon(Graphics g) {
         ImageIcon cannon = new ImageIcon(ViewPropertiesUtil.CANNON_IMAGE);
         cannon = new ImageIcon(cannon.getImage().getScaledInstance(cannonPojo.getWidth(), cannonPojo.getHeight(), Image.SCALE_FAST));
+        managerView.presenter.updateCannonYCoordinate();
         g.drawImage(cannon.getImage(), cannonPojo.getCoordinateX(), cannonPojo.getCoordinateY(), null);
 
+    }
 
-
+    private void paintAliens(Graphics g) {
         for (AlienPojo alien : aliens) {
             ImageIcon alienIcon = new ImageIcon(ViewPropertiesUtil.ALIEN_IMAGE);
             alienIcon = new ImageIcon(alienIcon.getImage().getScaledInstance(alien.getWidth(), alien.getHeight(), Image.SCALE_FAST));
             g.drawImage(alienIcon.getImage(), alien.getCoordinateX(), alien.getCoordinateY(), null);
-
         }
-
     }
 
     public void moveCannon() {

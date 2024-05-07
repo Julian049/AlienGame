@@ -26,23 +26,23 @@ public class ManagerPresenter implements ContractPlay.Presenter {
     @Override
     public void run() {
         makeMVP();
-        model.loadAliens();
         view.run();
+        model.initElements();
         model.countTime();
         model.updateCountALiens();
-        model.spawnNwAlien();
-
+        model.startAliens();
+        model.spawnNewAlien();
     }
 
     public void makeMVP() {
-        ManagerModel managerModel = new ManagerModel();
-        managerModel.setPresenter(this);
-
         ManagerView managerView = new ManagerView();
         managerView.setPresenter(this);
 
-        setModel(managerModel);
+        ManagerModel managerModel = new ManagerModel();
+        managerModel.setPresenter(this);
+
         setView(managerView);
+        setModel(managerModel);
     }
 
     @Override
@@ -77,19 +77,31 @@ public class ManagerPresenter implements ContractPlay.Presenter {
 
     @Override
     public void shoot() {
-        model.checkBulletColision();
         model.shoot();
     }
 
     @Override
-    public BulletPojo getBulletPojo() {
-        return model.getBulletPojo();
+    public CopyOnWriteArrayList<BulletPojo> getBullets() {
+        return model.getBullets();
     }
 
     @Override
-    public synchronized CopyOnWriteArrayList<AlienPojo> getAliens() {
-        CopyOnWriteArrayList<AlienPojo> aliens = model.getAliens();
-        return aliens;
+    public CopyOnWriteArrayList<AlienPojo> getAliens() {
+        return model.getAliens();
     }
 
+    @Override
+    public int getFrameWidth() {
+        return view.getFrameWidth();
+    }
+
+    @Override
+    public int getFrameHeight() {
+        return view.getFrameHeight();
+    }
+
+    @Override
+    public void updateCannonYCoordinate() {
+        model.updateCannonYCoordinate();
+    }
 }

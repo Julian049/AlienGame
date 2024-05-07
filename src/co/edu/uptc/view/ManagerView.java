@@ -1,6 +1,5 @@
 package co.edu.uptc.view;
 
-import co.edu.uptc.pojo.AlienPojo;
 import co.edu.uptc.presenter.ContractPlay;
 import co.edu.uptc.util.ViewPropertiesUtil;
 import co.edu.uptc.view.dashboard.DashboardView;
@@ -33,17 +32,23 @@ public class ManagerView extends JFrame implements ContractPlay.View {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         this.getContentPane().setBackground(Color.BLACK);
-        setLayout(new FlowLayout());
-        setResizable(false);
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
 
         informationPanelView = new InformationPanelView();
-        informationPanelView.setPreferredSize(new Dimension(ViewPropertiesUtil.INFORMATION_PANEL_WIDTH, ViewPropertiesUtil.INFORMATION_PANEL_HEIGHT));
-        add(informationPanelView);
+        constraints.weighty = 0.1;
+        constraints.weightx = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        add(informationPanelView, constraints);
 
         dashboardView = new DashboardView();
         dashboardView.setManagerView(getInstance());
-        dashboardView.setPreferredSize(new Dimension(ViewPropertiesUtil.DASHBOARD_PANEL_WIDTH, ViewPropertiesUtil.DASHBOARD_PANEL_HEIGHT));
-        add(dashboardView);
+        constraints.weighty = 0.9;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        add(dashboardView, constraints);
     }
 
     @Override
@@ -65,5 +70,15 @@ public class ManagerView extends JFrame implements ContractPlay.View {
     @Override
     public void updateKilledALiens(int aliensKilled) {
         informationPanelView.getAliensKilledLabel().setText("Aliens killed: " + aliensKilled);
+    }
+
+    @Override
+    public int getFrameWidth() {
+        return this.getWidth();
+    }
+
+    @Override
+    public int getFrameHeight() {
+        return dashboardView.getHeight();
     }
 }

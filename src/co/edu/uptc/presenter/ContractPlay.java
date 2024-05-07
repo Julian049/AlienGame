@@ -12,15 +12,18 @@ public interface ContractPlay {
         void setPresenter(Presenter presenter);
         void countTime();
         CannonPojo getCannonPojo();
-        BulletPojo getBulletPojo();
+        CopyOnWriteArrayList<BulletPojo> getBullets();
         void moveCannonRight();
         void moveCannonLeft();
         void shoot();
-        void loadAliens();
-        void checkBulletColision();
         CopyOnWriteArrayList<AlienPojo> getAliens();
         void updateCountALiens();
-        void spawnNwAlien();
+        void spawnNewAlien();
+        void startAliens();
+        int getFrameWidth();
+        int getFrameHeight();
+        void initElements();
+        void updateCannonYCoordinate();
     }
 
     interface View {
@@ -29,11 +32,12 @@ public interface ContractPlay {
         void updateTime(String time);
         void updateAliveALiens(int aliensAlive);
         void updateKilledALiens(int aliensKilled);
+        int getFrameWidth();
+        int getFrameHeight();
     }
 
     interface Presenter {
         void setView(View view);
-
         void setModel(Model model);
         void run();
         void updateTime(String time);
@@ -41,9 +45,12 @@ public interface ContractPlay {
         void moveCannonRight();
         CannonPojo getCannonPojo();
         void shoot();
-        BulletPojo getBulletPojo();
+        CopyOnWriteArrayList<BulletPojo> getBullets();
         CopyOnWriteArrayList<AlienPojo> getAliens();
         void updateAliveALiens(int aliensAlive);
         void updateKilledALiens(int aliensKilled);
+        int getFrameWidth();
+        int getFrameHeight();
+        void updateCannonYCoordinate();
     }
 }
