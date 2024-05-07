@@ -82,7 +82,7 @@ public class ManagerAliensModel {
                 for (AlienPojo alien : aliens) {
                     moveAlien(alien);
                 }
-                SleepUtil.sleep(5);
+                SleepUtil.sleep(ModelPropertiesUtil.SPEED_ALIENS);
             }
         });
         thread.start();
