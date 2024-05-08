@@ -34,6 +34,7 @@ public interface ContractPlay {
         void updateKilledALiens(int aliensKilled);
         int getFrameWidth();
         int getFrameHeight();
+        void initMenu();
     }
 
     interface Presenter {
@@ -52,5 +53,6 @@ public interface ContractPlay {
         int getFrameWidth();
         int getFrameHeight();
         void updateCannonYCoordinate();
+        void startGame();
     }
 }

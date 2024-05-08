@@ -4,6 +4,7 @@ import co.edu.uptc.presenter.ContractPlay;
 import co.edu.uptc.util.ViewPropertiesUtil;
 import co.edu.uptc.view.dashboard.DashboardView;
 import co.edu.uptc.view.dashboard.InformationPanelView;
+import co.edu.uptc.view.menu.SelectKeyView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,7 @@ public class ManagerView extends JFrame implements ContractPlay.View {
     public ContractPlay.Presenter presenter;
     private InformationPanelView informationPanelView;
     private DashboardView dashboardView;
+    private SelectKeyView selectKeyView;
 
     @Override
     public void setPresenter(ContractPlay.Presenter presenter) {
@@ -33,8 +35,10 @@ public class ManagerView extends JFrame implements ContractPlay.View {
         setLocationRelativeTo(null);
         this.getContentPane().setBackground(Color.BLACK);
         setLayout(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
+    }
 
+    private void initGame() {
+        GridBagConstraints constraints = new GridBagConstraints();
         informationPanelView = new InformationPanelView();
         constraints.weighty = 0.1;
         constraints.weightx = 1;
@@ -52,24 +56,32 @@ public class ManagerView extends JFrame implements ContractPlay.View {
     }
 
     @Override
+    public void initMenu() {
+        selectKeyView = new SelectKeyView();
+        selectKeyView.setManagerView(getInstance());
+        selectKeyView.run();
+    }
+
+    @Override
     public void run() {
+        initGame();
         dashboardView.threadPaint();
         setVisible(true);
     }
 
     @Override
     public void updateTime(String time) {
-        informationPanelView.getTimeLabel().setText("Time: " + time);
+        informationPanelView.getTimeLabel().setText(ViewPropertiesUtil.TIME_TITLE + time);
     }
 
     @Override
     public void updateAliveALiens(int aliensAlive) {
-        informationPanelView.getAliensAliveLabel().setText("Aliens alive: " + aliensAlive);
+        informationPanelView.getAliensAliveLabel().setText(ViewPropertiesUtil.ALIENS_ALIVE_TITLE + aliensAlive);
     }
 
     @Override
     public void updateKilledALiens(int aliensKilled) {
-        informationPanelView.getAliensKilledLabel().setText("Aliens killed: " + aliensKilled);
+        informationPanelView.getAliensKilledLabel().setText(ViewPropertiesUtil.ALIENS_KILLED_TITLE + aliensKilled);
     }
 
     @Override
@@ -81,4 +93,14 @@ public class ManagerView extends JFrame implements ContractPlay.View {
     public int getFrameHeight() {
         return dashboardView.getHeight();
     }
+
+    public void startGame() {
+        presenter.startGame();
+    }
+
+    public char getKeyToShoot() {
+        return selectKeyView.getKeyToShoot();
+    }
+
+
 }

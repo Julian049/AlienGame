@@ -54,7 +54,7 @@ public class DashboardView extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        ImageIcon background = new ImageIcon("img/background.jpg");
+        ImageIcon background = new ImageIcon(ViewPropertiesUtil.BACKGROUND_IMAGE);
         background = new ImageIcon(background.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_FAST));
         g.drawImage(background.getImage(), 0, 0, null);
         paintBullets(g);
@@ -104,7 +104,7 @@ public class DashboardView extends JPanel {
                     managerView.presenter.moveCannonLeft();
                 } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     managerView.presenter.moveCannonRight();
-                } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                } else if (e.getKeyChar() == managerView.getKeyToShoot()) {
                     managerView.presenter.shoot();
                 }
             }

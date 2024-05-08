@@ -26,6 +26,11 @@ public class ManagerPresenter implements ContractPlay.Presenter {
     @Override
     public void run() {
         makeMVP();
+        view.initMenu();
+    }
+
+    @Override
+    public void startGame() {
         view.run();
         model.initElements();
         model.countTime();

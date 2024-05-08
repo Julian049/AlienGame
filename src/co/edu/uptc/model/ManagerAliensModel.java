@@ -10,6 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ManagerAliensModel {
 
     private CopyOnWriteArrayList<AlienPojo> aliens = new CopyOnWriteArrayList<>();
+    private int aliensAlive = 0;
     private ManagerModel managerModel;
 
     public void setManagerModel(ManagerModel managerModel) {
@@ -26,6 +27,7 @@ public class ManagerAliensModel {
                 alien.setCoordinateY(randomY(alien));
                 alien.setSpeed(randomSpeed());
                 randomType(alien);
+                aliensAlive++;
                 aliens.add(alien);
             }
         });
@@ -116,6 +118,6 @@ public class ManagerAliensModel {
     }
 
     public int getAliensAlive() {
-        return aliens.size();
+        return aliensAlive;
     }
 }

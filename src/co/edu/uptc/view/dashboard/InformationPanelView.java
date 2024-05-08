@@ -10,7 +10,6 @@ public class InformationPanelView extends JPanel {
     private JLabel aliensKilledLabel;
     private JLabel aliensAliveLabel;
     private JLabel timeLabel;
-    private Font font;
 
     public InformationPanelView() {
         initComponents();
@@ -18,7 +17,6 @@ public class InformationPanelView extends JPanel {
 
     private void initComponents() {
         this.setBackground(Color.black);
-        font = new Font(ViewPropertiesUtil.FONT_NAME, ViewPropertiesUtil.FONT_STYLE, ViewPropertiesUtil.FONT_SIZE);
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         createLabels(gbc);
@@ -31,18 +29,18 @@ public class InformationPanelView extends JPanel {
     }
 
     private void createLabelAliensKilled(GridBagConstraints gbc) {
-        aliensKilledLabel = new JLabel("Aliens killed: ");
+        aliensKilledLabel = new JLabel(ViewPropertiesUtil.ALIENS_KILLED_TITLE);
         aliensKilledLabel.setForeground(Color.WHITE);
-        aliensKilledLabel.setFont(font);
+        aliensKilledLabel.setFont(ViewPropertiesUtil.getMyFont().deriveFont(Font.PLAIN, 10));
         gbc.gridx = 0;
         gbc.gridy = 0;
         add(aliensKilledLabel, gbc);
     }
 
     private void createLabelAliensAlive(GridBagConstraints gbc) {
-        aliensAliveLabel = new JLabel("Aliens alive: ");
+        aliensAliveLabel = new JLabel(ViewPropertiesUtil.ALIENS_ALIVE_TITLE);
         aliensAliveLabel.setForeground(Color.WHITE);
-        aliensAliveLabel.setFont(font);
+        aliensAliveLabel.setFont(ViewPropertiesUtil.getMyFont().deriveFont(Font.PLAIN, 10));
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 25, 0, 0);
@@ -50,9 +48,9 @@ public class InformationPanelView extends JPanel {
     }
 
     private void createLabelTime(GridBagConstraints gbc) {
-        timeLabel = new JLabel("Time: 0");
+        timeLabel = new JLabel(ViewPropertiesUtil.TIME_TITLE);
         timeLabel.setForeground(Color.WHITE);
-        timeLabel.setFont(font);
+        timeLabel.setFont(ViewPropertiesUtil.getMyFont().deriveFont(Font.PLAIN, 10));
         gbc.gridx = 2;
         gbc.gridy = 0;
         add(timeLabel, gbc);

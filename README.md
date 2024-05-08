@@ -1,15 +1,17 @@
 # Alien Game
 
 ## Requisitos
-Java 17 o superior
-Windonws 10 o superior
+- Java 17 o superior
+- Windonws 10 o superior
 
 ## Funcionamiento
 El programa consta de eliminar aliens. Dichos aliens se van generando, ya sea en izquierda o derecha, y se van moviendo hacia el otro lado con diferentes velocidades.
 
+Al iniciar el programa saldra un menu que le pedira ingresar la tecla para disparar, sin embargo, hay algunas teclas que no estan disponibles como shift,control,alt, las tecla F (F1,F2,etc)
+
 Cada alien tiene valores diferentes generados aleatoriamente como el tamaño, velocidad, coordenada  Y y lugar de aparición (izquierda o derecha).
 
-El cañón con el que se pueden eliminar los aliens, se mueve con las flechas `right` y `left`, además para disparar se asignó la tecla `space`.
+El cañón con el que se pueden eliminar los aliens, se mueve con las flechas `right` y `left`.
 
 ### Valores ajustables por el usuario
 El programa cuenta con 2 archivos de configuración `ModelConfig.properties` y `ViewConfig.properties` que se encuentran en la carpeta `src` del proyecto.
@@ -39,13 +41,24 @@ En el archivo `ModelConfig.properties` tenemos las siguientes claves.
 En el archivo `ViewConfig.properties` tenemos las siguientes claves.
 
 - `paintSpeedThread` es la velocidad del hilo que actuliza el panel y sus componentes gráficos, su valor predeterminado es 1.
-- `fontName`, `fontSize` y `fontStyle` son los valores que permiten modificar toda la letra que maneja el panel de información del juego. Sus valores predeterminados son `Arial`, `20` y `1`.
+- `fontPath` es la ruta de la fuente que maneja el juego.
 - `frameWidth` es el ancho inicial de la ventana de juego.
 - `frameHeight` es el alto inicial de la ventana de juego.
 - `alienImage` es la ruta de la imagen de los aliens.
 - `bulletImage` es la ruta de la imagen de la bala.
 - `cannonImage` es la ruta de la imagen del cañon.
-
-
+- `backgroundImage` es la ruta de la imagen del fondo del panel.
+- `aliensAliveTitle` es el texto que aparece al lado de los aliens vivos.
+- `aliensKilledTitle` es el texto que aparece al lado de los aliens eliminados.
+- `timeTitle` es el texto que aparece al lado del texto.
+- `menuWidth` es el ancho del menu.
+- `menuHeight` es el alto del menu.
+- `menuKeyLabel` es el texto que aparece en el menu para presionar una tecla.
+- `beforeSelectKeyLabel` es el texto que avisa al usuario que debe presionar una tecla para disparar.
+- `keySelectedLabel` es el texto que notifica al usuario que se ha guardado la tecla.
+- `startButtonText` es el texto del boton del menu.
+- `errorText` es el texto del error que sale si no se pone una tecla.
+- `titleGameLabel` es el titulo del juego que aparece en el menu.
+- `noteLabel` es un mensaje que aparece notificando al usuario algunas de las teclas que no estan permitidas.
 
 IMPORTANTE: El tamaño de la ventana se puede modificar en ejecución del código, sus componentes se reubican automáticamente, **excepto** si se modifica el ancho, el cañón **no** se reubica automáticamente, lo demás se modifica de forma automatica.
